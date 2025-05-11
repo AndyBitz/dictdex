@@ -34,3 +34,7 @@ export async function getWords({ after }: { after?: string | null } = {}) {
 		moreAfter: words.moreAfter,
 	};
 }
+
+export async function deleteWord(id: string) {
+	return await ronin.remove.word.with({ id });
+}
