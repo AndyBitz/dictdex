@@ -9,13 +9,14 @@ const ronin = roninFactory({
 
 export async function getWord(word: string) {
 	return await ronin.get.word({
-		with: { word },
+		with: { normalizedWord: word.toLocaleLowerCase() },
 	});
 }
 
 export async function saveWord(def: z.infer<typeof definition>) {
 	return await ronin.add.word.with({
 		word: def.word,
+		normalizedWord: def.word.toLocaleLowerCase(),
 		description: def.description,
 		types: def.types,
 		examples: def.examples,

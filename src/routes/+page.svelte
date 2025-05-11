@@ -10,6 +10,12 @@
 		<input type="text" name="word" placeholder="renitent" value="{form?.word}" class="p-2" />
 		<button type="submit" class="p-2">Search</button>
 	</form>
+	
+	{#if form?.error}
+		<section class="text-red-700">
+			<p>Error: {form.error.message}</p>
+		</section>
+	{/if}
 
 	{#if form?.word}
 		<Word form={form} />

@@ -18,16 +18,17 @@ export const load: PageServerData = async (event) => {
 export const actions = {
 	default: async (event) => {
 		const data = await event.request.formData();
-		const word = data.get('word')?.toString().trim();
-		
+		const word = data.get('word')
+			?.toString()
+			?.replaceAll(/[-"_,.;:$!]/g, '') // Remove some special chars
+			?.replaceAll(/ +/g, ' ')
+			.trim();
+
 		if (!word) return fail(400, { error: { message: 'Word is required.' }});
-		if (typeof word !== 'string') return fail(400, { error: { message: 'Invalid word' } });
-		if (word.includes(' ')) return fail(400, { error: { message: 'Word cannot contain spaces' } });
-		if (encodeURIComponent(word) !== word) return fail(400, { error: { message: 'Word cannot contain special characters' } });
-		
+
 		const user = await getCurrentUser(event.cookies);
 		if (!user) return fail(401, { error: { message: 'Not authorized.'} });
-
+		
 		const entry = await getWord(word);
 		if (entry) {
 			console.log({ entry });
@@ -38,11 +39,11 @@ export const actions = {
 		console.log({ definition });
 
 		if ('invalid' in definition) {
-			throw new Error('Word is not valid');
+			return fail(400, { error: { message: 'Invalid word.' } })
 		}
 
 		if ('misspelling' in definition) {
-			throw new Error('Word is a misspelling');
+			return fail(400, { error: { message: `Did you mean: ${definition.misspelling}` } })
 		}
 
 		const savedEntry = await saveWord(definition);

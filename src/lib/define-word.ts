@@ -17,13 +17,34 @@ const schema = z.object({
 		definition,
 		z.object({
 			misspelling: z.string(),
-			language: z.string(),
 		}),
 		z.object({
 			invalid: z.boolean(),
 		}),
 	]),
 });
+
+const description = `
+Describe the given word like a dictionary entry.
+
+If the word is a misspelling, set the misspelling field to the potential word and set nothing else.
+If the word is invalid, only set the invalid field to true and set nothing else.
+
+For all valid words, set the word field to the word in a normalized form.
+This means that english words would be lower case unless they are names,
+german nouns would be title case, a german verb in lower case and so on.
+	
+Also provide a description, what type of word it is (noun, verb, etc.),
+some example sentences, and the language it is in.
+Keep the language in title case.
+
+The word is most likely english, german, or japanese.
+
+Also consider informal words or words found on urban dictionary.
+If that's the case, set informal to true.
+
+If the word is the same in multiple languages, prefer the english one.
+`.trim();
 
 export async function defineWord(word: string) {
 	const openai = createOpenAI({
@@ -33,7 +54,7 @@ export async function defineWord(word: string) {
 	const { object } = await generateObject({
 		model: openai('gpt-4.1-mini'),
 		schema,
-		schemaDescription: `Describe the given word like a dictionary entry. Provide the word in a normalized form, meaning, a german noun would be in title case, a german verb in lower case, english lower case as well, unless it's a name. Also provide its description, what type of word it is (noun, verb, etc.), some example sentences, and the language it is in. The word is most likely english, german, or japanese. Also consider informal words or words found on urban dictionary. If that's the case, set informal to true. If the word is the same in multiple languages, prefere the english one. If the word is not valid, set the invalid field to true.  If the word is a misspelling, provide the correct spelling in the misspelling field. Keep the language in title case.`,
+		schemaDescription: description,
 		prompt: `Define "${word}".`,
 	});
 

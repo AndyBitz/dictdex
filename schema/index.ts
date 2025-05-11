@@ -14,6 +14,7 @@ export const Word = model({
 
 	fields: {
 		word: string(),
+		normalizedWord: string(),
 		description: string(),
 		types: json(),
 		examples: json(),
