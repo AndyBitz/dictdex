@@ -9,7 +9,6 @@ export const load: PageServerData = async (event) => {
 
 	const word = await getWord(event.params.word);
 	if (!word) return null;
-	
 
 	return {
 		word,
