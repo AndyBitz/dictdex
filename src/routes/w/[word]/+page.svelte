@@ -1,15 +1,18 @@
 <script lang="ts">
 	import type { PageProps } from './$types'
-	import Word from '$lib/components/Word.svelte';
+	import Word from '../../../lib/components/Word.svelte';
+    import Stack from '../../../lib/components/Stack.svelte';
+    import Container from '../../../lib/components/Container.svelte';
 	
 	const { data }: PageProps = $props();
-	console.log({ data });
 </script>
 
-<section>
-	<a href="/">Back</a>
+<Container>
+	<Stack>
+		<a href="/">Home</a>
+	</Stack>
 
 	{#if data?.word}
 		<Word form={data.word} />
 	{/if}
-</section>
+</Container>

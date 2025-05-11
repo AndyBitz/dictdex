@@ -14,8 +14,9 @@ export const actions = {
 			secure: true,
 			httpOnly: true,
 			sameSite: 'lax',
+			maxAge: 31556952,
 		});
-		
+
 		return { username };
 	},
 } satisfies Actions;

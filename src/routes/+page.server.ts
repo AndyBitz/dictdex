@@ -9,10 +9,7 @@ export const load: PageServerData = async (event) => {
 	if (!user) return null;
 
 	const words = await getWords();
-
-	return {
-		words,
-	};
+	return { words };
 }
 
 export const actions = {

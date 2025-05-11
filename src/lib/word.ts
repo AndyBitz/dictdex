@@ -25,6 +25,12 @@ export async function saveWord(def: z.infer<typeof definition>) {
 	});
 }
 
-export async function getWords() {
-	return await ronin.get.words();
+export async function getWords({ after }: { after?: string | null } = {}) {
+	const words = await ronin.get.words({ after, limitedTo: 50 });
+	
+	return {
+		list: words,
+		moreBefore: words.moreBefore,
+		moreAfter: words.moreAfter,
+	};
 }

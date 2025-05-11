@@ -1,35 +1,41 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
 	import Word from '$lib/components/Word.svelte';
+	import WordList from '$lib/components/WordList.svelte';
+    import Stack from '$lib/components/Stack.svelte';
+    import Container from '$lib/components/Container.svelte';
 
 	const { data, form }: PageProps = $props();
 </script>
 
-<main class="flex flex-col items-center justify-center m-4 gap-8">
-	<form method="POST" class="border-3 border-amber-700">
-		<input type="text" name="word" placeholder="renitent" value="{form?.word}" class="p-2" />
-		<button type="submit" class="p-2">Search</button>
-	</form>
-	
-	{#if form?.error}
-		<section class="text-red-700">
-			<p>Error: {form.error.message}</p>
-		</section>
-	{/if}
+<Container>
+	<Stack class="flex flex-col gap-2">
+		<form method="POST" class="flex gap-2">
+			<input
+				type="text"
+				name="word"
+				placeholder="renitent"
+				value="{form?.word}" 
+				class="focus:outline-none border-1 border-slate-600 p-2 focus:bg-slate-800 focus:text-stone-200"
+			/>
+			<button
+				type="submit"
+				class="cursor-pointer p-2 border-1 border-slate-600 hover:bg-slate-800 hover:text-stone-200"
+			>
+				Define
+			</button>
+		</form>
+
+		{#if form?.error}
+			<section class="text-red-700">
+				<p>Error: {form.error.message}</p>
+			</section>
+		{/if}
+	</Stack>
 
 	{#if form?.word}
 		<Word form={form} />
 	{/if}
 	
-	{#if data.words}
-		<section class="mt-8 min-w-full max-w-128">
-			<ul class="flex flex-col justify-start gap-2">
-				{#each data.words as word}
-					<li>
-						<a href="/w/{word.word}">{word.word}</a>
-					</li>
-				{/each}
-			</ul>
-		</section>
-	{/if}
-</main>
+	<WordList initialData={data.words} />
+</Container>
