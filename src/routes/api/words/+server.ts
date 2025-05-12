@@ -8,8 +8,9 @@ export const GET: RequestHandler = async (event) => {
 	if (!user) return send(401, {});
 	
 	const after = event.url.searchParams.get('after');
-	const data = await getWords({ after });
-
+	const containing = event.url.searchParams.get('containing');
+	const data = await getWords({ after, containing });
+	
 	return new Response(
 		JSON.stringify(data),
 		{
