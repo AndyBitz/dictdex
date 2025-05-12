@@ -12,4 +12,5 @@
 
 <main class="m-4">
 	{@render children()}
+	<script defer type="application/json" data-flag-values>{data.encryptedFlagValues}</script>
 </main>
