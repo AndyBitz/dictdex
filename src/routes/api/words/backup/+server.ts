@@ -3,8 +3,8 @@ import { send } from '$lib/utils';
 import { env } from '$env/dynamic/private';
 import { dev } from '$app/environment';
 import { put } from '@vercel/blob';
+import { getWords } from '$lib/ddb';
 import type { RequestHandler } from '@sveltejs/kit';
-import { getWords } from '$lib/word';
 
 type AsyncReturnType<T extends (...args: any) => Promise<any>> =
     T extends (...args: any) => Promise<infer R> ? R : any

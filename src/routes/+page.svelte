@@ -6,6 +6,7 @@
     import Container from '$lib/components/Container.svelte';
 
 	const { data, form }: PageProps = $props();
+	console.log(data);
 </script>
 
 <Container>

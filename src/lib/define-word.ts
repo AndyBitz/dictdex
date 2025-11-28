@@ -60,3 +60,4 @@ export async function defineWord(word: string) {
 
 	return object.result;
 }
+

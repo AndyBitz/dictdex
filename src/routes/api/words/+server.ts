@@ -1,6 +1,6 @@
 import { getCurrentUser } from '$lib/auth';
 import { send } from '$lib/utils';
-import { getWords } from '$lib/word';
+import { getWords } from '$lib/ddb';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async (event) => {

@@ -9,19 +9,18 @@
     "sourceMap": true,
     "strict": true,
     "moduleResolution": "bundler",
-    "paths": {
-			"$lib": [
-				"./src/lib"
-			],
-			"$lib/*": [
-				"./src/lib/*"
-			]
-		}
+		//   "paths": {
+		// 	"$lib": [
+		// 		"./src/lib"
+		// 	],
+		// 	"$lib/*": [
+		// 		"./src/lib/*"
+		// 	]
+		// }
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    ".ronin/*.d.ts",
   ],
   "extends": "./.svelte-kit/tsconfig.json"
 }

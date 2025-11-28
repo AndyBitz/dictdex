@@ -1,8 +1,8 @@
 import type { Actions, PageServerData } from './$types';
 import { defineWord } from '$lib/define-word';
-import { getWord, getWords, saveWord } from '$lib/word';
 import { getCurrentUser } from '$lib/auth';
 import { fail } from '@sveltejs/kit';
+import { getWord, getWords, saveWord } from '$lib/ddb';
 
 export const load: PageServerData = async (event) => {
 	const user = await getCurrentUser(event.cookies);

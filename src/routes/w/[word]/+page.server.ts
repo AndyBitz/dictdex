@@ -1,7 +1,7 @@
 import type { PageServerData } from './$types';
-import { getWord } from '$lib/word';
 import { getCurrentUser } from '$lib/auth';
 import { showDeleteButton } from '$lib/flags';
+import { getWord } from '$lib/ddb';
 
 export const load: PageServerData = async (event) => {
 	const user = await getCurrentUser(event.cookies);
