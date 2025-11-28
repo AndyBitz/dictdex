@@ -1,6 +1,6 @@
 import { getCurrentUser } from '$lib/auth';
 import { send } from '$lib/utils';
-import { deleteWord } from '$lib/word';
+import { deleteWord } from '$lib/ddb';
 import type { RequestHandler } from './$types';
 
 export const DELETE: RequestHandler = async (event) => {

@@ -21,11 +21,13 @@ export interface WordBase {
 
 export interface Word extends WordBase {
   hk: 'wordList';
-  sk: string; // createdAt timestamp as ISO string
+  /** The createdAt timestamp as ISO string */
+  sk: string;
 }
 
 export interface WordIndex extends WordBase {
   hk: 'word',
-  sk: string; // normalizedWord
+  /** The normalized word */
+  sk: string;
 }
 

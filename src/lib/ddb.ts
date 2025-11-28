@@ -175,6 +175,11 @@ export async function deleteWord(word: string) {
   const item = await getWord(word);
   if (!item) return;
 
+  const wordIndex: Pick<WordIndex, 'hk' | 'sk'> = {
+    hk: 'word',
+    sk: item.normalizedWord,
+  };
+
   await getClient().send(
     new TransactWriteCommand({
       TransactItems: [
@@ -191,8 +196,8 @@ export async function deleteWord(word: string) {
           Delete: {
             TableName: tableName,
             Key: {
-              hk: 'word-list',
-              sk: item.createdAt,
+              hk: wordIndex.hk,
+              sk: wordIndex.sk,
             },
           },
         },
