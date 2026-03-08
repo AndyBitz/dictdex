@@ -19,13 +19,15 @@ export interface WordBase {
   createdAt: number;
 }
 
-export interface Word extends WordBase {
+/** Word as part of a list */
+export interface WordListEntry extends WordBase {
   hk: 'wordList';
   /** The createdAt timestamp as ISO string */
   sk: string;
 }
 
-export interface WordIndex extends WordBase {
+/** Word as standalone document */
+export interface WordEntryByName extends WordBase {
   hk: 'word',
   /** The normalized word */
   sk: string;

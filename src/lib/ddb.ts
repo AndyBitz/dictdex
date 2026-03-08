@@ -4,7 +4,7 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { awsCredentialsProvider } from "@vercel/functions/oidc";
 import { VERCEL_OIDC_TOKEN, AWS_ROLE_ARN } from '$env/static/private';
 import { GetCommand, PutCommand, QueryCommand, TransactWriteCommand } from "@aws-sdk/lib-dynamodb";
-import type { User, Word, WordBase, WordIndex } from './types';
+import type { User, WordListEntry, WordBase, WordEntryByName } from './types';
 
 const tableName = 'dictdex';
 
@@ -56,7 +56,7 @@ export async function getWords({
   after?: string | null;
   containing?: string | null;
 } = {}) {
-  const list: Word[] = [];
+  const list: WordListEntry[] = [];
 
   let lastKey: Record<string, unknown> | undefined;
   if (after) {
@@ -88,14 +88,14 @@ export async function getWords({
     );
 
     lastKey = result.LastEvaluatedKey;
-    list.push(...result.Items as Word[]);
+    list.push(...result.Items as WordListEntry[]);
     if (list.length >= limit) break;
   } while (lastKey)
 
   return { list, moreAfter: lastKey ? btoa(JSON.stringify(lastKey)) : null };
 }
 
-export async function getWord(word: string): Promise<Word | null> {
+export async function getWord(word: string): Promise<WordEntryByName | null> {
   const result = await getClient().send(
     new GetCommand({
       TableName: tableName,
@@ -106,7 +106,7 @@ export async function getWord(word: string): Promise<Word | null> {
     })
   );
 
-  if (result.Item) return result.Item as Word;
+  if (result.Item) return result.Item as WordEntryByName;
   return null;
 }
 
@@ -130,13 +130,13 @@ export async function saveWord(
     updatedAt: def.updatedAt || Date.now(),
   };
 
-  const word: Word = {
+  const word: WordListEntry = {
     ...base,
     hk: 'wordList',
     sk: new Date(base.createdAt).toISOString(),
   };
 
-  const wordIndex: WordIndex = {
+  const wordIndex: WordEntryByName = {
     ...base,
     hk: 'word',
     sk: word.normalizedWord,
@@ -175,9 +175,9 @@ export async function deleteWord(word: string) {
   const item = await getWord(word);
   if (!item) return;
 
-  const wordIndex: Pick<WordIndex, 'hk' | 'sk'> = {
-    hk: 'word',
-    sk: item.normalizedWord,
+  const wordIndex: Pick<WordListEntry, 'hk' | 'sk'> = {
+    hk: 'wordList',
+    sk: new Date(item.createdAt).toISOString(),
   };
 
   await getClient().send(

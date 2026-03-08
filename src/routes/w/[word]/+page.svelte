@@ -8,7 +8,7 @@
 	const { data }: PageProps = $props();
 	
 	const deleteWord = async () => {
-		await fetch(`/api/words/${data.word.id}`, {
+		await fetch(`/api/words/${data.word.normalizedWord}`, {
 			method: 'DELETE',
 		}).then(res => res.json());
 		
