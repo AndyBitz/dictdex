@@ -30,7 +30,7 @@
 		"@flags-sdk/vercel": "^1.0.2",
 		"@vercel/blob": "^1.0.1",
 		"@vercel/functions": "^3.3.4",
-		"@vercel/toolbar": "^0.2.2",
+		"@vercel/toolbar": "^0.1.36",
 		"ai": "^5.0.36",
 		"bcrypt": "^5.1.1",
 		"flags": "^4.0.3",
