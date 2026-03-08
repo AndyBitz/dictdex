@@ -1,7 +1,5 @@
 import z from 'zod';
-import { generateObject } from "ai"
-import { createOpenAI } from '@ai-sdk/openai';
-import { env } from '$env/dynamic/private';
+import { generateObject, createGateway } from "ai";
 
 export const definition = z.object({
 	word: z.string().min(1),
@@ -47,12 +45,10 @@ If the word is the same in multiple languages, prefer the english one.
 `.trim();
 
 export async function defineWord(word: string) {
-	const openai = createOpenAI({
-		apiKey: env.OPENAI_API_KEY,
-	});
+	const gateway = createGateway();
 
 	const { object } = await generateObject({
-		model: openai('gpt-4.1-mini'),
+		model: gateway('google/gemini-3-flash'),
 		schema,
 		schemaDescription: description,
 		prompt: `Define "${word}".`,
