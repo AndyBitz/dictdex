@@ -27,7 +27,6 @@
 	"dependencies": {
 		"@aws-sdk/client-dynamodb": "^3.940.0",
 		"@aws-sdk/lib-dynamodb": "^3.940.0",
-		"@flags-sdk/vercel": "^1.0.2",
 		"@vercel/blob": "^1.0.1",
 		"@vercel/functions": "^3.3.4",
 		"@vercel/toolbar": "^0.2.2",
