@@ -1,6 +1,6 @@
 import z from 'zod';
 import { generateObject, createGateway } from "ai";
-import { aiModel } from './flags';
+import { llm } from './flags';
 
 export const definition = z.object({
 	word: z.string().min(1),
@@ -12,53 +12,76 @@ export const definition = z.object({
 });
 
 const schema = z.object({
-	result: z.union([
-		definition,
-		z.object({
-			misspelling: z.string(),
-		}).optional(),
-		z.object({
-			invalid: z.boolean(),
-		}).optional(),
-	]),
+	status: z.enum(['valid', 'misspelling', 'invalid']),
+	word: z.string().optional(),
+	description: z.string().optional(),
+	types: z.array(z.string()).optional(),
+	examples: z.array(z.string()).optional(),
+	informal: z.boolean().optional(),
+	language: z.string().optional(),
+	misspelling: z.string().optional(),
 });
 
-const description = `
+const system = `
 Describe the given word like a dictionary entry.
 
-If the word is a misspelling, set the misspelling field to the potential word and set nothing else.
-If the word is invalid, only set the invalid field to true and set nothing else.
+Set "status" to one of: "valid", "misspelling", or "invalid".
 
-For all valid words, set the word field to the word in a normalized form.
-This means that english words would be lower case unless they are names,
-german nouns would be title case, a german verb in lower case and so on.
-	
-Also provide a description, what type of word it is (noun, verb, etc.),
-as well as at least two example sentences, and the language it is in.
-Keep the language in title case.
+Be generous with what counts as valid. Words from any language are valid, including loanwords, proper nouns, scientific terms, food names, plant names, brand names that have become common words, slang, and informal language. If the word exists in any dictionary, encyclopedia, or is in common use anywhere in the world, it is valid.
 
-The word is most likely english, german, or japanese.
+Only set status to "misspelling" if the word is clearly a typo or misspelling of another word. Set the "misspelling" field to the corrected word. Leave all other fields empty.
+Only set status to "invalid" if the input is truly random characters or complete nonsense (e.g. "asdfghjkl"). Leave all other fields empty.
+
+If the word is valid, set status to "valid" and fill in all of the following fields:
+- "word": the word in normalized form (english words lower case unless names, german nouns title case, german verbs lower case, etc.)
+- "description": a dictionary-style description
+- "types": what type of word it is (noun, verb, adjective, etc.)
+- "examples": at least two example sentences using the word
+- "informal": true if the word is slang or found on urban dictionary, false otherwise
+- "language": the language the word is in, in title case. For loanwords widely used in English, set language to "English".
+
 If it's japanese, include romanji in the description.
 
 Also consider informal words or words found on urban dictionary.
-If that's the case, set informal to true.
 
-If the word is the same in multiple languages, prefer the english one.
+If the word is the same in multiple languages, prefer the english definition.
 `.trim();
 
 export async function defineWord(word: string) {
 	const gateway = createGateway();
-	const model = await aiModel();
+	const model = await llm();
 
   console.log({ msg: 'Defining word', word, model });
 
 	const { object } = await generateObject({
 		model: gateway(model),
 		schema,
-		schemaDescription: description,
+		system,
 		prompt: `Define "${word}".`,
 	});
 
-	return object.result;
+	if (object.status === 'invalid') {
+		return { invalid: true } as const;
+	}
+
+	if (object.status === 'misspelling' && object.misspelling) {
+		return { misspelling: object.misspelling } as const;
+	}
+
+	// Validate that a valid response has all required fields
+	const parsed = definition.safeParse({
+		word: object.word,
+		description: object.description,
+		types: object.types,
+		examples: object.examples,
+		informal: object.informal,
+		language: object.language,
+	});
+
+	if (!parsed.success) {
+		return { invalid: true } as const;
+	}
+
+	return parsed.data;
 }
 

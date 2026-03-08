@@ -11,10 +11,10 @@ export const showDeleteButton = flag<boolean>({
 	adapter: vercelAdapter(),
 });
 
-export const aiModel = flag<string>({
-	key: 'ai_model',
+export const llm = flag<string>({
+	key: 'llm',
 	description: 'The AI model used for word definitions',
-	defaultValue: 'openai/gpt-5.4',
+	defaultValue: 'google/gemini-3-flash',
 	adapter: vercelAdapter(),
 });
 
