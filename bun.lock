@@ -13,7 +13,7 @@
         "@vercel/toolbar": "^0.2.2",
         "ai": "^5.0.36",
         "bcrypt": "^5.1.1",
-        "flags": "^4.0.3",
+        "flags": "4.0.0",
         "jose": "^6.0.11",
         "zod": "^4.0.0",
       },
@@ -549,7 +549,7 @@
 
     "find-up": ["find-up@5.0.0", "", { "dependencies": { "locate-path": "^6.0.0", "path-exists": "^4.0.0" } }, "sha512-78/PXT1wlLLDgTzDs7sjq9hzz0vXD+zn+7wypEe4fXQxCmdmqfGsEPQxmiCSQI3ajFV91bVSsvNtrJRiW6nGng=="],
 
-    "flags": ["flags@4.0.3", "", { "dependencies": { "@edge-runtime/cookies": "^5.0.2", "jose": "^5.2.1" }, "peerDependencies": { "@opentelemetry/api": "^1.7.0", "@sveltejs/kit": "*", "next": "*", "react": "*", "react-dom": "*" }, "optionalPeers": ["@opentelemetry/api", "@sveltejs/kit", "next", "react", "react-dom"] }, "sha512-rLkO+Hn6dSEsDZm6lHuXr3GjfHf8N67lhXCFUeSRBjDdb/43ez5Je8DC/K0HzMtl3LcWc7zgF79V/3WzJXVm/w=="],
+    "flags": ["flags@4.0.0", "", { "dependencies": { "@edge-runtime/cookies": "^5.0.2", "jose": "^5.2.1" }, "peerDependencies": { "@opentelemetry/api": "^1.7.0", "@sveltejs/kit": "*", "next": "*", "react": "*", "react-dom": "*" }, "optionalPeers": ["@opentelemetry/api", "@sveltejs/kit", "next", "react", "react-dom"] }, "sha512-CpONOK/nflKfaTT36r+Y4SP5rb9mv3AdqY/2Ws+TScrEGlT4PK+PZNiKJgIH87HooTXDblz31807q7lZ3LpuYQ=="],
 
     "follow-redirects": ["follow-redirects@1.15.9", "", {}, "sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ=="],
 
