@@ -50,7 +50,7 @@ export async function defineWord(word: string) {
 	const { object } = await generateObject({
 		// model: gateway('openai/gpt-4.1-mini'),
 		// model: gateway('google/gemini-3-flash'),
-		model: gateway('openai/gpt-5.1-instant'), // Use more expensive model to use up credits
+		model: gateway('openai/gpt-5.4'), // Use more expensive model to use up credits
 		schema,
 		schemaDescription: description,
 		prompt: `Define "${word}".`,
