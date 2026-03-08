@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "flags-sdk": {
+      "source": "vercel/flags",
+      "sourceType": "github",
+      "computedHash": "8c2258fab4ffe9edf023f5e5c0a5eb4760c8e2bcb36f34ec3555679fe1088c29"
+    }
+  }
+}
