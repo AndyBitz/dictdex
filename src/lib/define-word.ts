@@ -1,5 +1,6 @@
 import z from 'zod';
 import { generateObject, createGateway } from "ai";
+import { aiModel } from './flags';
 
 export const definition = z.object({
 	word: z.string().min(1),
@@ -15,10 +16,10 @@ const schema = z.object({
 		definition,
 		z.object({
 			misspelling: z.string(),
-		}),
+		}).optional(),
 		z.object({
 			invalid: z.boolean(),
-		}),
+		}).optional(),
 	]),
 });
 
@@ -33,10 +34,11 @@ This means that english words would be lower case unless they are names,
 german nouns would be title case, a german verb in lower case and so on.
 	
 Also provide a description, what type of word it is (noun, verb, etc.),
-some example sentences, and the language it is in.
+as well as at least two example sentences, and the language it is in.
 Keep the language in title case.
 
 The word is most likely english, german, or japanese.
+If it's japanese, include romanji in the description.
 
 Also consider informal words or words found on urban dictionary.
 If that's the case, set informal to true.
@@ -46,11 +48,12 @@ If the word is the same in multiple languages, prefer the english one.
 
 export async function defineWord(word: string) {
 	const gateway = createGateway();
+	const model = await aiModel();
+
+  console.log({ msg: 'Defining word', word, model });
 
 	const { object } = await generateObject({
-		// model: gateway('openai/gpt-4.1-mini'),
-		// model: gateway('google/gemini-3-flash'),
-		model: gateway('openai/gpt-5.4'), // Use more expensive model to use up credits
+		model: gateway(model),
 		schema,
 		schemaDescription: description,
 		prompt: `Define "${word}".`,
