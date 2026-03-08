@@ -2,7 +2,7 @@ import z from 'zod';
 import { definition } from './define-word';
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { awsCredentialsProvider } from "@vercel/functions/oidc";
-import { VERCEL_OIDC_TOKEN, AWS_ROLE_ARN } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { GetCommand, PutCommand, QueryCommand, TransactWriteCommand } from "@aws-sdk/lib-dynamodb";
 import type { User, WordListEntry, WordBase, WordEntryByName } from './types';
 
@@ -10,8 +10,8 @@ const tableName = 'dictdex';
 
 let client: DynamoDBClient | null = null;
 export function getClient() {
-  process.env.VERCEL_OIDC_TOKEN = VERCEL_OIDC_TOKEN;
-  process.env.AWS_ROLE_ARN = AWS_ROLE_ARN;
+  process.env.VERCEL_OIDC_TOKEN = env.VERCEL_OIDC_TOKEN;
+  process.env.AWS_ROLE_ARN = env.AWS_ROLE_ARN;
 
   client ??= new DynamoDBClient({
     region: 'eu-central-1',

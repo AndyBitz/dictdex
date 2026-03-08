@@ -1,8 +1,8 @@
 import { flag } from 'flags/sveltekit';
-import { FLAGS } from '$env/static/private';
+import { env } from '$env/dynamic/private';
 import { createVercelAdapter } from '@flags-sdk/vercel';
 
-const vercelAdapter = createVercelAdapter(FLAGS);
+const vercelAdapter = createVercelAdapter(env.FLAGS ?? '');
 
 export const showDeleteButton = flag<boolean>({
 	key: 'show_delete_button',

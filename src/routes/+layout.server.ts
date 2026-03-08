@@ -1,10 +1,10 @@
-import type { PageServerData } from './$types';
+import type { LayoutServerLoad } from './$types';
 import { getCurrentUser } from '$lib/auth';
 import * as flags from '$lib/flags';
 import { encryptFlagValues } from 'flags';
 import { env } from '$env/dynamic/private';
 
-export const load: PageServerData = async (event) => {
+export const load: LayoutServerLoad = async (event) => {
 	const user = await getCurrentUser(event.cookies);
 
 	// Evaluate all flags, encrypt them, and forward them to the client
